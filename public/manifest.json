@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Pomodoro Timer",
+  "version": "1.0.0",
+  "description": "A simple pomodoro timer extension",
+  "permissions": ["storage", "alarms"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html"
+  }
+}
