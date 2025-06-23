@@ -47,11 +47,32 @@ function startTimer() {
   }, 1000)
 };
 
+function resetTimer() {
+  // Clear/Stop interval and reset isRunning
+  clearInterval(timerID);
+  timerID = null;
+  isRunning = false;
+
+  // Reset time based on current mode
+  if (mode === "work") {
+    timeLeft = workDuration;
+  }
+  else timeLeft = breakDuration;
+
+  updateStorage();
+};
+
 // Listen for messages from other files
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("background received message:", message.action);
   if (message.action === "START_TIMER") {
     startTimer();
     sendResponse({ status: "started" });
+    return true;
+  }
+  else if (message.action === "RESET_TIMER") {
+    resetTimer();
+    sendResponse({ status: "reset" });
     return true;
   }
 });
