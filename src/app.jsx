@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import TimerControls from "./components/timer-controls.jsx";
+import TimerDisplay from "./components/timer-display.jsx";
 
 export default function App() {
-  const workDuration = 10;
-  const breakDuration = 5;
-
   const [timeLeft, setTimeLeft] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [mode, setMode] = useState("work");
@@ -25,7 +23,10 @@ export default function App() {
 
   return (
     <>
-      <h1>{timeLeft}</h1>
+      <TimerDisplay
+        timeLeft={timeLeft}
+      />
+
       <h1>{mode}</h1>
       
       <TimerControls />
