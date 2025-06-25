@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TimerControls from "./components/timer-controls.jsx";
 import TimerDisplay from "./components/timer-display.jsx";
+import Mode from "./components/mode.jsx";
 
 export default function App() {
   const [timeLeft, setTimeLeft] = useState(null);
@@ -27,7 +28,9 @@ export default function App() {
         timeLeft={timeLeft}
       />
 
-      <h1>{mode}</h1>
+      <Mode
+        mode={mode}
+      />
       
       <TimerControls />
     </>
