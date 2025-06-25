@@ -1,10 +1,10 @@
 // State variables
-let timeLeft = 10;
+let timeLeft = 25 * 60;
 let isRunning = false;
 let mode = "work";
 
-const workDuration = 10;
-const breakDuration = 5;
+const workDuration = 25 * 60;
+const breakDuration = 5 * 60;
 
 // Stores ID of the running interval to clear it later
 let timerID = null;
@@ -76,3 +76,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 });
+
+// MAKE MODE COMPONENT
+// ADD SOUND ALARM ON MODE SWITCH
+// ADD OPTIONAL AUTO START BUTTON
+// ADD MODE ICONS
+// ADD DARK MODE TOGGLE
