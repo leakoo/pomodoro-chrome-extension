@@ -22,10 +22,21 @@ export default function TimerControls() {
     });
   };
 
+  function handleAutoStart() {
+    chrome.runtime.sendMessage({ action: "AUTO_START" }, (res) => {
+      if (chrome.runtime.lastError) {
+        console.error(chrome.runtime.lastError.message);
+        return;
+      }
+      console.log(res.status);
+    });
+  }
+
   return (
     <>
       <button onClick={handleStart}>START</button>
       <button onClick={handleReset}>RESET</button>
+      <button onClick={handleAutoStart}>AUTO-START</button>
     </>
   );
 };
