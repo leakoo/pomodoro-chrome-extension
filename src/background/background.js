@@ -2,6 +2,7 @@
 let timeLeft = 25 * 60;
 let isRunning = false;
 let mode = "work";
+let auto = false;
 
 const workDuration = 25 * 60;
 const breakDuration = 5 * 60;
@@ -11,7 +12,7 @@ let timerID = null;
 
 function updateStorage() {
   // Save current state to local storage
-  chrome.storage.local.set({ timeLeft, isRunning, mode });
+  chrome.storage.local.set({ timeLeft, isRunning, mode, auto });
 };
 
 function startTimer() {
@@ -41,6 +42,12 @@ function startTimer() {
           mode = "work";
           timeLeft = workDuration;
         }
+
+        // Start timer instantlyt if auto is toggled on
+        if (auto) {
+          startTimer();
+        }
+
         updateStorage();
       }, 1000)
     }
@@ -62,6 +69,16 @@ function resetTimer() {
   updateStorage();
 };
 
+function autoStart() {
+  // Toggle auto start state on/off 
+  if (auto) {
+    auto = false;
+  } 
+  else auto = true;
+
+  updateStorage();
+};
+
 // Listen for messages from other files
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("background received message:", message.action);
@@ -75,10 +92,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ status: "reset" });
     return true;
   }
+  else if (message.action === "AUTO_START") {
+    autoStart();
+    sendResponse({ status: "auto" });
+    return true;
+  }
 });
 
-// MAKE MODE COMPONENT
 // ADD SOUND ALARM ON MODE SWITCH
-// ADD OPTIONAL AUTO START BUTTON
+// ADD AUTO START VISIBLE ON/OFF
 // ADD MODE ICONS
 // ADD DARK MODE TOGGLE
