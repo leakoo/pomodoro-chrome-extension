@@ -1,4 +1,4 @@
-export default function TimerControls() {
+export default function TimerControls({ autoStart }) {
 
   // Send message to background.js to start timer and log any errors
   function handleStart() {
@@ -22,6 +22,7 @@ export default function TimerControls() {
     });
   };
 
+  // Send message to background.js to auto start and log any errors
   function handleAutoStart() {
     chrome.runtime.sendMessage({ action: "AUTO_START" }, (res) => {
       if (chrome.runtime.lastError) {
@@ -36,7 +37,9 @@ export default function TimerControls() {
     <>
       <button onClick={handleStart}>START</button>
       <button onClick={handleReset}>RESET</button>
-      <button onClick={handleAutoStart}>AUTO-START</button>
+      <button onClick={handleAutoStart}>
+        {autoStart === false ? <p className="text-red-500">AUTO-START</p> : <p className="text-green-500">AUTO-START</p>}
+      </button>
     </>
   );
 };

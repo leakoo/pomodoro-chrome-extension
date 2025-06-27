@@ -34,7 +34,9 @@ export default function App() {
         mode={mode}
       />
       
-      <TimerControls />
+      <TimerControls
+        autoStart={autoStart} 
+      />
     </>
   )
 };
