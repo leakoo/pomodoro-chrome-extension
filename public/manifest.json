@@ -9,12 +9,5 @@
   },
   "action": {
     "default_popup": "index.html"
-  },
-  "offscreen_documents": [
-    {
-      "url": "offscreen/offscreen.html",
-      "reasons": ["AUDIO_PLAYBACK"],
-      "justification": "Play audio when pomodoro timer ends"
-    }
-  ]
+  }
 }
