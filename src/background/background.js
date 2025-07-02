@@ -33,7 +33,7 @@ function startTimer() {
       isRunning = false;
      
       // Wait 1 second before swithcing modes and resetting timer
-      setTimeout(() => {
+      setTimeout(async() => {
         if (mode === "work") {
           mode = "break";
           timeLeft = breakDuration;
@@ -42,6 +42,10 @@ function startTimer() {
           mode = "work";
           timeLeft = workDuration;
         }
+
+        // Load offscreen.html before sending message to play sound
+        await ensureOffscreenPage();
+        chrome.runtime.sendMessage({ action: "PLAY_SOUND" });
 
         // Start timer instantlyt if auto is toggled on
         if (auto) {
@@ -79,6 +83,19 @@ function autoStart() {
   updateStorage();
 };
 
+async function ensureOffscreenPage() {
+  // Check if offscreen is already loaded and exit if it does
+  const exists = await chrome.offscreen.hasDocument();
+  if (exists) return;
+
+  // Create offscreen if one isnt loaded already
+  await chrome.offscreen.createDocument({
+    url: "offscreen/offscreen.html",
+    reasons: ["AUDIO_PLAYBACK"],
+    justification: "Play audio when pomodoro timer ends",
+  });
+};
+
 // Listen for messages from other files
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("background received message:", message.action);
@@ -98,8 +115,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 });
-
-// ADD SOUND ALARM ON MODE SWITCH
-// ADD AUTO START VISIBLE ON/OFF
-// ADD MODE ICONS
-// ADD DARK MODE TOGGLE
