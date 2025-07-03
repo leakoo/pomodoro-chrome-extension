@@ -17,6 +17,10 @@ export default defineConfig({
         {
           src: 'src/offscreen/',
           dest: ''
+        },
+        {
+          src: 'src/assets',
+          dest: ''
         }
       ]
     })
