@@ -16,9 +16,9 @@ export default function Mode({ mode }) {
   }, [mode])
 
   return (
-    <>
-      <h1>{mode}</h1>
-      <h2>{emoji}</h2>
-    </>
+    <div className="flex justify-center gap-2 pt-4 pb-4">
+      <h2 className="text-3xl">{mode}</h2>
+      <h2 className="text-3xl">{emoji}</h2>
+    </div>
   );
 };
