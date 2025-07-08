@@ -34,12 +34,17 @@ export default function TimerControls({ autoStart }) {
   }
 
   return (
-    <>
-      <button onClick={handleStart}>START</button>
-      <button onClick={handleReset}>RESET</button>
-      <button onClick={handleAutoStart}>
-        {autoStart === false ? <p className="text-red-500">AUTO-START</p> : <p className="text-green-500">AUTO-START</p>}
-      </button>
-    </>
+    <div className="flex flex-col text-lg">
+      <div className="flex justify-center gap-3 pb-2">
+        <button onClick={handleStart} className="p-1 pr-4 pl-4 border rounded-full cursor-pointer">START</button>
+        <button onClick={handleReset} className="p-1 pr-4 pl-4 border rounded-full cursor-pointer">RESET</button>
+      </div>
+
+      <div className="flex justify-center">
+        <button onClick={handleAutoStart} className="cursor-pointer">
+          {autoStart === false ? <p className="text-red-500">AUTO-START</p> : <p className="text-green-500">AUTO-START</p>}
+        </button>
+      </div>
+    </div>
   );
 };
