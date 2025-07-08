@@ -8,7 +8,7 @@ export default function TimerDisplay({ timeLeft }) {
 
   return (
     <>
-      <h1 className="flex justify-center text-4xl">{formattedTime}</h1>
+      <h1 className="flex justify-center text-5xl">{formattedTime}</h1>
     </>
   );
 };
