@@ -26,6 +26,14 @@ function startTimer() {
     timeLeft--;
     updateStorage();
 
+    // Seperate time format to timer-display to show time even when popup is closed
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft - minutes * 60;
+    const formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    
+    // Display time left even when popup is closed
+    chrome.action.setBadgeText({ text: formattedTime });
+
     // When countdown reaches 0
     if (timeLeft <= 0) {      
       clearInterval(timerID);  // Stop interval
@@ -112,6 +120,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   else if (message.action === "AUTO_START") {
     autoStart();
     sendResponse({ status: "auto" });
+    return true;
+  }
+  else if (message.action === "UPDATE_BADGE") {
+    chrome.action.setBadgeText({ text: message.time });
+    sendResponse({ status: "updated"});
+    return true;
+  }
+  else if (message.action === "KEEP_ALIVE") {
+    // Do nothing, just prevents worker from going idle
     return true;
   }
 });
