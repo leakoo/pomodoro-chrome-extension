@@ -9,5 +9,10 @@
   },
   "action": {
     "default_popup": "index.html"
+  },
+  "icons": {
+    "16": "assets/favicon-16x16.png",
+    "48": "assets/favicon-48x48.png",
+    "128": "assets/favicon-128x128.png"
   }
 }
