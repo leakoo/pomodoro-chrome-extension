@@ -33,6 +33,8 @@ function startTimer() {
     
     // Display time left even when popup is closed
     chrome.action.setBadgeText({ text: formattedTime });
+    chrome.action.setBadgeBackgroundColor({ color: "#DD2E44" });
+    chrome.action.setBadgeTextColor({ color: "#FFF" });
 
     // When countdown reaches 0
     if (timeLeft <= 0) {      
