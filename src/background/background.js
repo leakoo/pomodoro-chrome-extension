@@ -3,6 +3,13 @@ let timeLeft = 25 * 60;
 let isRunning = false;
 let mode = "work";
 let auto = false;
+let phase = "work";
+
+chrome.runtime.onStartup.addListener(() => {
+  restoreStateFromStorage();
+});
+
+restoreState();
 
 const workDuration = 25 * 60;
 const breakDuration = 5 * 60;
@@ -12,8 +19,18 @@ let timerID = null;
 
 function updateStorage() {
   // Save current state to local storage
-  chrome.storage.local.set({ timeLeft, isRunning, mode, auto });
+  chrome.storage.local.set({ timeLeft, isRunning, mode, auto, phase });
 };
+
+function restoreState() {
+  chrome.storage.local.get([ "timeLeft", "isRunning", "mode", "auto", "phase" ], (res) => {
+    timeLeft = res.timeLeft ?? workDuration;
+    isRunning = res.isRunning ?? false;
+    mode = res.mode ?? "work";
+    auto = res.auto ?? false;
+    phase = res.phase ?? "work";
+  });
+}
 
 function startTimer() {
   // Exit early if timer is running or interval exists
@@ -47,10 +64,12 @@ function startTimer() {
         if (mode === "work") {
           mode = "break";
           timeLeft = breakDuration;
+          phase = "break";
         }
         else {
           mode = "work";
           timeLeft = workDuration;
+          phase = "work";
         }
 
         // Load offscreen.html before sending message to play sound
@@ -127,10 +146,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   else if (message.action === "UPDATE_BADGE") {
     chrome.action.setBadgeText({ text: message.time });
     sendResponse({ status: "updated"});
-    return true;
-  }
-  else if (message.action === "KEEP_ALIVE") {
-    // Do nothing, just prevents worker from going idle
     return true;
   }
 });
