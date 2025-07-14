@@ -14,10 +14,10 @@ export default function App() {
     const interval = setInterval (() => {
       chrome.storage.local.get(["timeLeft", "isRunning", "mode", "auto"], (res) => {
         // If result is not undefined update state
-        if (res.timeLeft !== undefined) setTimeLeft(res.timeLeft);
-        if (res.isRunning !== undefined) setIsRunning(res.isRunning);
-        if (res.mode !== undefined) setMode(res.mode);
-        if (res.auto !== undefined) setAutoStart(res.auto);
+        setTimeLeft(res.timeLeft ?? 10);
+        setIsRunning(res.isRunning ?? false);
+        setMode(res.mode ?? "work");        
+        setAutoStart(res.auto ?? false);
       });
     }, 100);
 
