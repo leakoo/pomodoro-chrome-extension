@@ -6,7 +6,7 @@ let auto = false;
 let phase = "work";
 
 chrome.runtime.onStartup.addListener(() => {
-  restoreStateFromStorage();
+  restoreState();
 });
 
 restoreState();
@@ -22,10 +22,10 @@ function updateStorage() {
   chrome.storage.local.set({ timeLeft, isRunning, mode, auto, phase });
 };
 
+// Fetch and update to old states after browser close or service worker idle
 function restoreState() {
-  chrome.storage.local.get([ "timeLeft", "isRunning", "mode", "auto", "phase" ], (res) => {
+  chrome.storage.local.get([ "timeLeft", "mode", "auto", "phase" ], (res) => {
     timeLeft = res.timeLeft ?? workDuration;
-    isRunning = res.isRunning ?? false;
     mode = res.mode ?? "work";
     auto = res.auto ?? false;
     phase = res.phase ?? "work";
