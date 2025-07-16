@@ -6,7 +6,7 @@ import Mode from "./components/mode.jsx";
 export default function App() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState("work");
+  const [mode, setMode] = useState("Work");
   const [autoStart, setAutoStart] = useState(false);
 
   // Get updated state from background.js every 100ms to keep everything in sync
@@ -16,7 +16,7 @@ export default function App() {
         // If result is not undefined update state
         setTimeLeft(res.timeLeft ?? 10);
         setIsRunning(res.isRunning ?? false);
-        setMode(res.mode ?? "work");        
+        setMode(res.mode ?? "Work");        
         setAutoStart(res.auto ?? false);
       });
     }, 100);

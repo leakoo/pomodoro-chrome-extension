@@ -6,7 +6,7 @@ export default function Mode({ mode }) {
     const workEmojis = ["🧠", "💻", "✍️", "📝", "🔥", "🎯"];
     const breakEmojis = ["☕", "🧘", "🌿", "🚶", "🎵", "🛋️"];
 
-    if (mode === "work") {
+    if (mode === "Work") {
       return workEmojis[Math.floor(Math.random() * workEmojis.length)]
     }
     else {
