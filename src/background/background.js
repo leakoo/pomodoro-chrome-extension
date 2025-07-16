@@ -3,32 +3,29 @@ let timeLeft = 25 * 60;
 let isRunning = false;
 let mode = "work";
 let auto = false;
-let phase = "work";
-
-chrome.runtime.onStartup.addListener(() => {
-  restoreState();
-});
+let modeCount = 0;
 
 restoreState();
 
 const workDuration = 25 * 60;
 const breakDuration = 5 * 60;
+const longBreakDuration = 15 * 60;
 
 // Stores ID of the running interval to clear it later
 let timerID = null;
 
 function updateStorage() {
   // Save current state to local storage
-  chrome.storage.local.set({ timeLeft, isRunning, mode, auto, phase });
+  chrome.storage.local.set({ timeLeft, isRunning, mode, modeCount, auto });
 };
 
 // Fetch and update to old states after browser close or service worker idle
 function restoreState() {
-  chrome.storage.local.get([ "timeLeft", "mode", "auto", "phase" ], (res) => {
+  chrome.storage.local.get([ "timeLeft", "mode", "modeCount", "auto" ], (res) => {
     timeLeft = res.timeLeft ?? workDuration;
-    mode = res.mode ?? "work";
+    mode = res.mode ?? "Work";
+    modeCount = res.modeCount ?? 0;
     auto = res.auto ?? false;
-    phase = res.phase ?? "work";
   });
 }
 
@@ -61,15 +58,20 @@ function startTimer() {
      
       // Wait 1 second before swithcing modes and resetting timer
       setTimeout(async() => {
-        if (mode === "work") {
-          mode = "break";
+        if (modeCount === 7) {
+          mode = "Long Break";
+          timeLeft = longBreakDuration;
+          modeCount = 0;
+        }
+        else if (mode === "Work") {
+          mode = "Break";
           timeLeft = breakDuration;
-          phase = "break";
+          modeCount++;
         }
         else {
-          mode = "work";
+          mode = "Work";
           timeLeft = workDuration;
-          phase = "work";
+          modeCount++;
         }
 
         // Load offscreen.html before sending message to play sound
@@ -94,10 +96,13 @@ function resetTimer() {
   isRunning = false;
 
   // Reset time based on current mode
-  if (mode === "work") {
+  if (mode === "Work") {
     timeLeft = workDuration;
   }
-  else timeLeft = breakDuration;
+  else if (mode === "Break") {
+    timeLeft = breakDuration
+  }
+  else timeLeft = longBreakDuration;
 
   updateStorage();
 };
