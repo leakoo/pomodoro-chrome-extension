@@ -1,9 +1,10 @@
 // State variables
 let timeLeft = 25 * 60;
 let isRunning = false;
-let mode = "work";
+let mode = "Work";
 let auto = false;
 let modeCount = 0;
+let theme = "light";
 
 restoreState();
 
@@ -11,21 +12,21 @@ const workDuration = 25 * 60;
 const breakDuration = 5 * 60;
 const longBreakDuration = 15 * 60;
 
-// Stores ID of the running interval to clear it later
 let timerID = null;
 
 function updateStorage() {
   // Save current state to local storage
-  chrome.storage.local.set({ timeLeft, isRunning, mode, modeCount, auto });
+  chrome.storage.local.set({ timeLeft, isRunning, mode, modeCount, auto, theme });
 };
 
 // Fetch and update to old states after browser close or service worker idle
 function restoreState() {
-  chrome.storage.local.get([ "timeLeft", "mode", "modeCount", "auto" ], (res) => {
+  chrome.storage.local.get([ "timeLeft", "mode", "modeCount", "auto", "theme" ], (res) => {
     timeLeft = res.timeLeft ?? workDuration;
     mode = res.mode ?? "Work";
     modeCount = res.modeCount ?? 0;
     auto = res.auto ?? false;
+    theme = res.theme ?? "light";
   });
 }
 
@@ -35,7 +36,6 @@ function startTimer() {
   isRunning = true;
   updateStorage();
   
-  // Start interval to count down every second
   timerID = setInterval(() => {
     timeLeft--;
     updateStorage();
@@ -50,7 +50,6 @@ function startTimer() {
     chrome.action.setBadgeBackgroundColor({ color: "#DD2E44" });
     chrome.action.setBadgeTextColor({ color: "#FFF" });
 
-    // When countdown reaches 0
     if (timeLeft <= 0) {      
       clearInterval(timerID);  // Stop interval
       timerID = null;          // Clear interval ID
@@ -78,7 +77,6 @@ function startTimer() {
         await ensureOffscreenPage();
         chrome.runtime.sendMessage({ action: "PLAY_SOUND" });
 
-        // Start timer instantlyt if auto is toggled on
         if (auto) {
           startTimer();
         }
@@ -90,7 +88,6 @@ function startTimer() {
 };
 
 function resetTimer() {
-  // Clear/Stop interval and reset isRunning
   clearInterval(timerID);
   timerID = null;
   isRunning = false;
@@ -107,7 +104,7 @@ function resetTimer() {
   updateStorage();
 };
 
-function autoStart() {
+function toggleAutoStart() {
   // Toggle auto start state on/off 
   if (auto) {
     auto = false;
@@ -130,6 +127,16 @@ async function ensureOffscreenPage() {
   });
 };
 
+function updateThemeState() {
+  if (theme === "light") {
+    theme = "dark";
+  }
+  else if (theme === "dark") {
+    theme = "light";
+  }
+  updateStorage();
+}
+
 // Listen for messages from other files
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("background received message:", message.action);
@@ -144,7 +151,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
   else if (message.action === "AUTO_START") {
-    autoStart();
+    toggleAutoStart();
     sendResponse({ status: "auto" });
     return true;
   }
@@ -153,4 +160,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ status: "updated"});
     return true;
   }
+  else if (message.action === "TOGGLE_DARK_MODE") {
+    updateThemeState();
+    sendResponse({ status: "darkmode toggled"});
+    return true;
+  }
 });
+
+// ADD BETTER STYLES WITH A COLOR PALLET FOR BOTH LIGHT AND DARK MODE
+
+// PROGRESS BAR
+// ADD DARK MODE TOGGLE
+// ADD LOADING LOGIC FOR APP.JSX 
