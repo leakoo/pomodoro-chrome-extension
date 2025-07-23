@@ -4,36 +4,36 @@ import TimerDisplay from "./components/timer-display.jsx";
 import Mode from "./components/mode.jsx";
 import DarkMode from "./components/dark-mode.jsx";
 
-export default function App() {
-  const [timeLeft, setTimeLeft] = useState(null);
-  const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState("Work");
-  const [autoStart, setAutoStart] = useState(false);
-  const [theme, setTheme] = useState("light");
+export default function App({ initialData }) {
+  const [timeLeft, setTimeLeft] = useState(initialData.timeLeft);
+  const [isRunning, setIsRunning] = useState(initialData.isRunning);
+  const [mode, setMode] = useState(initialData.mode);
+  const [autoStart, setAutoStart] = useState(initialData.autoStart);
+  const [theme, setTheme] = useState(initialData.theme);
 
-  // Get updated state from background.js every 100ms to keep everything in sync
+  // Listen for changes from background.js only updates what has been changed
   useEffect(() => {
-    const interval = setInterval (() => {
-      chrome.storage.local.get(["timeLeft", "isRunning", "mode", "auto", "theme"], (res) => {
-        // If result is not undefined update state
-        setTimeLeft(res.timeLeft ?? 10);
-        setIsRunning(res.isRunning ?? false);
-        setMode(res.mode ?? "Work");        
-        setAutoStart(res.auto ?? false);
-        setTheme(res.theme ?? "light");
-      });
-    }, 100);
+    function handleStorageChange(changes, area) {
+      if (area === "local") {
+        if (changes.timeLeft) setTimeLeft(changes.timeLeft.newValue);
+        if (changes.isRunning) setIsRunning(changes.isRunning.newValue);
+        if (changes.mode) setMode(changes.mode.newValue);
+        if (changes.auto) setAutoStart(changes.auto.newValue);
+        if (changes.theme) setTheme(changes.theme.newValue);
+      }
+    }
+    chrome.storage.onChanged.addListener(handleStorageChange);
 
-    return () => clearInterval(interval);
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange);
+    }
   }, []);
 
   useEffect(() => {
     const htmlTag = document.getElementById("darkmode");
 
-    if (theme === "dark") {
-      htmlTag.classList.add("dark");
-    }
-    else htmlTag.classList.remove("dark");
+    theme === "dark" ? 
+    htmlTag.classList.add("dark") : htmlTag.classList.remove("dark");
 
   }, [theme]);
 
