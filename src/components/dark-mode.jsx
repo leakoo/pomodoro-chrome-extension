@@ -1,4 +1,4 @@
-export default function DarkMode() {
+export default function DarkMode({ theme }) {
   
   function toggleDarkMode() {
     chrome.runtime.sendMessage({ action: "TOGGLE_DARK_MODE" }, (res) => {
@@ -11,7 +11,12 @@ export default function DarkMode() {
 
   return (
     <>
-      <button onClick={toggleDarkMode} className="">TOGGLE</button>
+      <button onClick={toggleDarkMode} className="">
+        {theme === "light" ? 
+          <img src="./assets/moon.png" className="top-4 left-4 absolute cursor-pointer" alt="Moon icon"/> : 
+          <img src="./assets/sun.png" className="top-4 left-4 absolute cursor-pointer" alt="Sun icon"/>
+        }
+      </button>
     </>
   );
 };
