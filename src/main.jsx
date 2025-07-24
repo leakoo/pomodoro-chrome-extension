@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './app.jsx';
 
+// Fetch stored state before React mounts for instant render
 chrome.storage.local.get(["timeLeft", "isRunning", "mode", "auto", "theme"], (res) => {
   const initialData  = {
     timeLeft: res.timeLeft ?? 25 * 60,
@@ -11,10 +12,6 @@ chrome.storage.local.get(["timeLeft", "isRunning", "mode", "auto", "theme"], (re
     autoStart: res.auto ?? false,
     theme: res.theme ?? "light"
   }
-
-  if (initialData.theme === "dark") {
-    document.getElementById("darkmode").classList.add("dark");
-  };
 
   createRoot(document.getElementById('root')).render(
   <StrictMode>
