@@ -40,7 +40,9 @@ export default function App({ initialData }) {
   return (
     <div className="flex justify-center items-center bg-[#EEE] dark:bg-[#111] p-6 min-h-screen text-[#111] dark:text-[#EEE]">
       <div className="p-2 w-full">
-        <DarkMode />
+        <DarkMode
+          theme={theme} 
+        />
 
         <TimerDisplay 
           timeLeft={timeLeft} 
