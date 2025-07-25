@@ -5,7 +5,7 @@ A simple Pomodoro timer extension for Chrome. Helps you stay focused by breaking
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Pomodoro Chrome extension screenshot](./src/assets/pomodoroChromeExtension.png)
 
 
 ## Tech Stack
