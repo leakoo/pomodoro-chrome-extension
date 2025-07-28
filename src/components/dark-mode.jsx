@@ -13,8 +13,8 @@ export default function DarkMode({ theme }) {
     <>
       <button onClick={toggleDarkMode} className="">
         {theme === "light" ? 
-          <img src="./assets/moon.png" className="top-4 left-4 absolute cursor-pointer" alt="Moon icon"/> : 
-          <img src="./assets/sun.png" className="top-4 left-4 absolute cursor-pointer" alt="Sun icon"/>
+          <img src="./assets/moon.png" className="top-4 left-4 absolute rotate-20 hover:-rotate-20 hover:transition-transform duration-150 cursor-pointer transistion ease" alt="Moon icon"/> : 
+          <img src="./assets/sun.png" className="top-4 left-4 absolute hover:rotate-45 hover:transition-transform duration-150 cursor-pointer transistion ease" alt="Sun icon"/>
         }
       </button>
     </>
