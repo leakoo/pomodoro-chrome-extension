@@ -33,12 +33,12 @@ export default function TimerControls({ autoStart }) {
   return (
     <div className="flex flex-col text-lg">
       <div className="flex justify-center gap-3 pb-2">
-        <button onClick={handleStart} className="p-1 pr-4 pl-4 border-2 rounded-2xl active:scale-95 cursor-pointer">START</button>
-        <button onClick={handleReset} className="p-1 px-4 border-2 rounded-2xl active:scale-95 cursor-pointer">RESET</button>
+        <button onClick={handleStart} className="bg-gradient-to-r from-red-500 via-rose-900 to-rose-500 p-2 px-6 rounded-full font-bold text-neutral-50 text-sm cursor-pointer">START</button>
+        <button onClick={handleReset} className="p-2 px-6 border-2 rounded-full font-bold text-sm cursor-pointer">RESET</button>
       </div>
 
       <div className="flex justify-center">
-        <button onClick={handleAutoStart} className="cursor-pointer">
+        <button onClick={handleAutoStart} className="pt-3 text-base cursor-pointer">
           {autoStart === false ? <p className="text-red-500">AUTO-START</p> : <p className="text-green-500">AUTO-START</p>}
         </button>
       </div>
