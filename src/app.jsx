@@ -32,28 +32,28 @@ export default function App({ initialData }) {
   useEffect(() => {
     const htmlTag = document.getElementById("darkmode");
 
-    theme === "dark" ? 
-    htmlTag.classList.add("dark") : htmlTag.classList.remove("dark");
+    theme === "dark" ?
+      htmlTag.classList.add("dark") : htmlTag.classList.remove("dark");
 
   }, [theme]);
 
   return (
-    <div className="flex justify-center items-center bg-[#EEE] dark:bg-[#111] p-6 min-h-screen text-[#111] dark:text-[#EEE]">
-      <div className="p-2 w-full">
+    <div className="flex justify-center items-center bg-[#EEE] dark:bg-[#111] px-6 py-8 min-h-screen text-[#111] dark:text-[#EEE]">
+      <div>
         <DarkMode
-          theme={theme} 
+          theme={theme}
         />
 
-        <TimerDisplay 
-          timeLeft={timeLeft} 
+        <TimerDisplay
+          timeLeft={timeLeft}
         />
 
-        <Mode 
-         mode={mode} 
+        <Mode
+          mode={mode}
         />
-      
-        <TimerControls 
-         autoStart={autoStart} 
+
+        <TimerControls
+          autoStart={autoStart}
         />
       </div>
     </div>
