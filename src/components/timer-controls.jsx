@@ -38,8 +38,8 @@ export default function TimerControls({ autoStart }) {
       </div>
 
       <div className="flex justify-center">
-        <button onClick={handleAutoStart} className="pt-3 text-base cursor-pointer">
-          {autoStart === false ? <p className="text-red-500">AUTO-START</p> : <p className="text-green-500">AUTO-START</p>}
+        <button onClick={handleAutoStart} className="hover:opacity-80 pt-3 text-sm active:scale-97 cursor-pointer">
+          {autoStart === false ? <p className="text-red-500 transition-colors duration-175">AUTO-START</p> : <p className="text-green-500 transition-colors duration-175">AUTO-START</p>}
         </button>
       </div>
     </div>
