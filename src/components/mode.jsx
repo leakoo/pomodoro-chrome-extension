@@ -18,7 +18,7 @@ export default function Mode({ mode }) {
   return (
     <div className="flex justify-center gap-2 pt-5 pb-5">
       <h2 className="bg-clip-text bg-gradient-to-r from-red-500 via-rose-900 to-rose-500 font-bold text-transparent text-2xl">{mode}</h2>
-      <h2 className="text-2xl">{emoji}</h2>
+      <h2 className="text-2xl animate-bounce">{emoji}</h2>
     </div>
   );
 };
