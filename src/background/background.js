@@ -21,7 +21,7 @@ function updateStorage() {
 
 // Fetch and update to old states after browser close or service worker idle
 function restoreState() {
-  chrome.storage.local.get([ "timeLeft", "mode", "modeCount", "auto", "theme" ], (res) => {
+  chrome.storage.local.get(["timeLeft", "mode", "modeCount", "auto", "theme"], (res) => {
     timeLeft = res.timeLeft ?? workDuration;
     mode = res.mode ?? "Work";
     modeCount = res.modeCount ?? 0;
@@ -35,7 +35,7 @@ function startTimer() {
   if (isRunning || timerID) return;
   isRunning = true;
   updateStorage();
-  
+
   timerID = setInterval(() => {
     timeLeft--;
     updateStorage();
@@ -44,19 +44,19 @@ function startTimer() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft - minutes * 60;
     const formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-    
+
     // Display time left even when popup is closed
     chrome.action.setBadgeText({ text: formattedTime });
     chrome.action.setBadgeBackgroundColor({ color: "#DD2E44" });
     chrome.action.setBadgeTextColor({ color: "#FFF" });
 
-    if (timeLeft <= 0) {      
+    if (timeLeft <= 0) {
       clearInterval(timerID);  // Stop interval
       timerID = null;          // Clear interval ID
       isRunning = false;
-     
+
       // Wait 1 second before swithcing modes and resetting timer
-      setTimeout(async() => {
+      setTimeout(async () => {
         if (modeCount === 7) {
           mode = "Long Break";
           timeLeft = longBreakDuration;
@@ -108,7 +108,7 @@ function toggleAutoStart() {
   // Toggle auto start state on/off 
   if (auto) {
     auto = false;
-  } 
+  }
   else auto = true;
 
   updateStorage();
@@ -157,18 +157,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   else if (message.action === "UPDATE_BADGE") {
     chrome.action.setBadgeText({ text: message.time });
-    sendResponse({ status: "updated"});
+    sendResponse({ status: "updated" });
     return true;
   }
   else if (message.action === "TOGGLE_DARK_MODE") {
     updateThemeState();
-    sendResponse({ status: "darkmode toggled"});
+    sendResponse({ status: "darkmode toggled" });
     return true;
   }
 });
-
-// ADD BETTER STYLES WITH A COLOR PALLET FOR BOTH LIGHT AND DARK MODE
-
-// PROGRESS BAR
-// ADD DARK MODE TOGGLE
-// ADD LOADING LOGIC FOR APP.JSX 
